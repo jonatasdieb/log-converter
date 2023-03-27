@@ -14,7 +14,7 @@ namespace CandidateTesting.JonatasDiebAraujoLima
             var serviceProvider = BuildServiceProvider();
 
             /*
-             * Obtém os comandos disponíveis que, no caso, irá retornar apenas ConvertCommandService referente ao 'convert'.
+             * Obtém os comandos disponíveis que, no caso, irá retornar apenas ConvertCommand referente ao 'convert'.
              * Mas já estaria pronto caso o sistema passasse a permitir outros comandos.
              */
             var commands = GetCommands(serviceProvider);

@@ -2,6 +2,7 @@
 using CandidateTesting.JonatasDiebAraujoLima.Interfaces;
 using CandidateTesting.JonatasDiebAraujoLima.Services;
 using CandidateTesting.JonatasDiebAraujoLima.TargetFormats;
+using JonatasDiebAraujoLima.Commands;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace CandidateTesting.JonatasDiebAraujoLima.StartupConfig
@@ -11,7 +12,7 @@ namespace CandidateTesting.JonatasDiebAraujoLima.StartupConfig
         public static void RegisterDependencyResolver(this IServiceCollection services)
         {               
             services.AddSingleton<IWebClientWrapper, WebClientWrapper>();
-            services.AddScoped<ICommand, ConvertCommandService>();
+            services.AddScoped<ICommand, ConvertCommand>();
             services.AddScoped<ILogAdapter, MinhaCdnLogAdapter>();         
             services.AddScoped<ILogsToTargetFormatter, AgoraFormatter>();
             services.AddScoped<ISaveConvertedLogs, SaveConvertedLogs>();

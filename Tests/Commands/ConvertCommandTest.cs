@@ -1,12 +1,12 @@
 ﻿using CandidateTesting.JonatasDiebAraujoLima.Interfaces;
-using CandidateTesting.JonatasDiebAraujoLima.Services;
+using JonatasDiebAraujoLima.Commands;
 using Moq;
 using System;
 using System.Collections.Generic;
 using System.Reflection;
 using Xunit;
 
-namespace Tests.Services
+namespace Tests.Commands
 {
     public class FakeAdapter : ILogAdapter
     {
@@ -18,24 +18,24 @@ namespace Tests.Services
         public string GetProvider() => "minha_cdn";
     }
 
-    public class ConvertCommandServiceTest
+    public class ConvertCommandTest
     {
         private readonly Mock<ISaveConvertedLogs> _saveConvertedLogs;
-        private readonly ConvertCommandService _convertCommandService;
+        private readonly ConvertCommand _convertCommand;
         private readonly FakeAdapter _fakeAdapter;
         private readonly string[] fakeArgs;
         private readonly MethodInfo Validate;
 
-        public ConvertCommandServiceTest()
+        public ConvertCommandTest()
         {
             _fakeAdapter = new FakeAdapter();
             _saveConvertedLogs = new Mock<ISaveConvertedLogs>();
             fakeArgs = new string[] { @"https://url/sourceUrl.txt", @"c:\targetPath.txt" };            
 
-            _convertCommandService = new ConvertCommandService(new List<ILogAdapter> { _fakeAdapter }, _saveConvertedLogs.Object);
+            _convertCommand = new ConvertCommand(new List<ILogAdapter> { _fakeAdapter }, _saveConvertedLogs.Object);
 
             //Necessário devido método Validate() ser private
-            Validate = typeof(ConvertCommandService).GetMethod("Validate", BindingFlags.Instance | BindingFlags.NonPublic);
+            Validate = typeof(ConvertCommand).GetMethod("Validate", BindingFlags.Instance | BindingFlags.NonPublic);
         }
 
         [Fact]
@@ -43,7 +43,7 @@ namespace Tests.Services
         {
             try
             {
-                Validate.Invoke(_convertCommandService, new object[] { fakeArgs, _fakeAdapter });
+                Validate.Invoke(_convertCommand, new object[] { fakeArgs, _fakeAdapter });
                 Assert.True(true);
             }
             catch (Exception)
@@ -55,8 +55,8 @@ namespace Tests.Services
         [Fact]
         public void Execute_ShouldNotThrowException()
         {
-            var convertCommandService = new ConvertCommandService(new List<ILogAdapter> { _fakeAdapter }, _saveConvertedLogs.Object);
-            convertCommandService.Execute(fakeArgs);
+            var convertCommand = new ConvertCommand(new List<ILogAdapter> { _fakeAdapter }, _saveConvertedLogs.Object);
+            convertCommand.Execute(fakeArgs);
 
             Assert.True(true);
         }
@@ -69,7 +69,7 @@ namespace Tests.Services
         {
             try
             {
-                Validate.Invoke(_convertCommandService, new object[] { args, _fakeAdapter });
+                Validate.Invoke(_convertCommand, new object[] { args, _fakeAdapter });
             }
             catch (TargetInvocationException e)
             {
@@ -90,7 +90,7 @@ namespace Tests.Services
 
             try
             {
-                Validate.Invoke(_convertCommandService, new object[] { fakeArgs, null });
+                Validate.Invoke(_convertCommand, new object[] { fakeArgs, null });
             }
             catch (TargetInvocationException e)
             {
@@ -113,7 +113,7 @@ namespace Tests.Services
         {
             try
             {
-                Validate.Invoke(_convertCommandService, new object[] { args, _fakeAdapter });
+                Validate.Invoke(_convertCommand, new object[] { args, _fakeAdapter });
             }
             catch (TargetInvocationException e)
             {

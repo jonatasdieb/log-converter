@@ -5,17 +5,17 @@ using System.IO;
 using System.Linq;
 
 
-namespace CandidateTesting.JonatasDiebAraujoLima.Services
+namespace JonatasDiebAraujoLima.Commands
 {
-    public class ConvertCommandService : ICommand
+    public class ConvertCommand : ICommand
     {
         private readonly IEnumerable<ILogAdapter> _logAdapters;
         private readonly ISaveConvertedLogs _saveConvertedLogs;
 
-        public ConvertCommandService(IEnumerable<ILogAdapter> logAdapters, ISaveConvertedLogs saveConvertedLogs)
+        public ConvertCommand(IEnumerable<ILogAdapter> logAdapters, ISaveConvertedLogs saveConvertedLogs)
         {
             _logAdapters = logAdapters;
-            _saveConvertedLogs = saveConvertedLogs; 
+            _saveConvertedLogs = saveConvertedLogs;
         }
 
         public string GetContext() => "convert";
@@ -35,7 +35,7 @@ namespace CandidateTesting.JonatasDiebAraujoLima.Services
             Validate(args, adapter);
 
             string sourceUrl = args[0];
-            string targetPath = args[1];            
+            string targetPath = args[1];
 
             var convertedLogs = adapter.Adapt(sourceUrl, targetFormat);
 
@@ -54,7 +54,7 @@ namespace CandidateTesting.JonatasDiebAraujoLima.Services
             string sourceUrl = args[0];
             string targetPath = args[1];
 
-            if(!sourceUrl.EndsWith(".txt") || !targetPath.EndsWith(".txt"))
+            if (!sourceUrl.EndsWith(".txt") || !targetPath.EndsWith(".txt"))
                 throw new ArgumentException("sourceUrl and targetPath should be a .txt file");
         }
 
